@@ -4,5 +4,15 @@
     (redrawRequest)="redrawRequest($event)"
     (cvsMouseOver)="MouseOver($event)"
     (cvsClick)="MouseClick($event)"
-    (cvsDoubleClick)="MouseDoubleClick($event)">
+    (cvsDoubleClick)="MouseDoubleClick($event)"
+    [zoomable]="zoomable"
+    [minimumZoom]="minimumZoom"
+    [maximumZoom]="maximumZoom"
+    [zoomDelta]="zoomDelta"
+    [ctrlZoomMultiplier]="ctrlZoomMultiplier"
+    [altZoomMultiplier]="altZoomMultiplier"
+    [canvasWidth]="canvasWidth"
+    [canvasHeight]="canvasHeight"
+  
+    >
 </lib-ngx-smart-canvas>

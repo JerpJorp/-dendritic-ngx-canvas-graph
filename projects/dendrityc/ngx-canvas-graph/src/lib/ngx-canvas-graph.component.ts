@@ -39,6 +39,17 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
   
   @Input() initialCollapseDepth = 99;
 
+  // for smart canvas
+  @Input() zoomable = true;   
+  @Input() minimumZoom = 0.4;
+  @Input() maximumZoom = 5;
+  @Input() zoomDelta = 0.05;
+  @Input() ctrlZoomMultiplier = 2;
+  @Input() altZoomMultiplier = 2;
+  @Input() canvasWidth = 2500;
+  @Input() canvasHeight = 3500;
+
+
   @Output() nodeClick = new EventEmitter<Node>();
   @Output() nodeDoubleClick = new EventEmitter<Node>();
   @Output() nodeMouseOver = new EventEmitter<Node>();
