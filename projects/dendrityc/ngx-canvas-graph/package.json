@@ -1,0 +1,14 @@
+{
+  "name": "@dendrityc/ngx-canvas-graph",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^12.2.0",
+    "@angular/core": "^12.2.0",
+    "@dendrityc/ngx-smart-canvas": "latest",
+    "dagre": "^0.8.5",
+    "uuid": "^8.3.2"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

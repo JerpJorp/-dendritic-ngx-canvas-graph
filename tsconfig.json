@@ -2,6 +2,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@dendrityc/ngx-canvas-graph": [
+        "dist/dendrityc/ngx-canvas-graph/dendrityc-ngx-canvas-graph",
+        "dist/dendrityc/ngx-canvas-graph"
+      ]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

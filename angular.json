@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "50c1e867-981c-449b-aee5-577f19f17f6b"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -102,6 +105,37 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "@dendrityc/ngx-canvas-graph": {
+      "projectType": "library",
+      "root": "projects/dendrityc/ngx-canvas-graph",
+      "sourceRoot": "projects/dendrityc/ngx-canvas-graph/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/dendrityc/ngx-canvas-graph/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dendrityc/ngx-canvas-graph/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/dendrityc/ngx-canvas-graph/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dendrityc/ngx-canvas-graph/src/test.ts",
+            "tsConfig": "projects/dendrityc/ngx-canvas-graph/tsconfig.spec.json",
+            "karmaConfig": "projects/dendrityc/ngx-canvas-graph/karma.conf.js"
           }
         }
       }
