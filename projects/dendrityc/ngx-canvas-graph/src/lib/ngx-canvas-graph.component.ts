@@ -11,8 +11,8 @@ import { Node } from './node';
 import { Link } from './link';
 import { GraphData, IExtendedEdge, IExtendedNode } from './graph-data';
 
-import { ICustomClear, 
-    ILinkCustomPostDraw, ILinkCustomPreDraw, 
+import { ICustomClear,
+    ILinkCustomPostDraw, ILinkCustomPreDraw,
     INodeCustomPostDraw, INodeCustomPreDraw } from './override-parameters';
 
 import { ExpansionModifier } from './expansion-modifier';
@@ -29,18 +29,18 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() graphId = uuid.v4();
 
   @Input() graphData = new GraphData();
-  
-  @Input() graphSettings: dagre.GraphLabel = { 
-    width: 1800, 
-    height: 1000, 
-    nodesep: 20, 
-    ranksep: 15, 
+
+  @Input() graphSettings: dagre.GraphLabel = {
+    width: 1800,
+    height: 1000,
+    nodesep: 20,
+    ranksep: 15,
     rankdir: 'LR' };
-  
+
   @Input() initialCollapseDepth = 99;
 
   // for smart canvas
-  @Input() zoomable = true;   
+  @Input() zoomable = true;
   @Input() minimumZoom = 0.4;
   @Input() maximumZoom = 5;
   @Input() zoomDelta = 0.05;
@@ -64,7 +64,7 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Output() nodePostDraw = new EventEmitter<INodeCustomPostDraw>();
 
   @Output() clearOverride = new EventEmitter<ICustomClear>();
-  
+
   destroyed$: Subject<void> = new Subject<void>();
 
   edges: IExtendedEdge[] = [];
@@ -79,10 +79,10 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
   constructor() { }
 
   viewportReady(viewPort: ViewPort) {
-  
+
     this.mainLayer = viewPort.AddLayer();
     this.overlayLayer = viewPort.AddLayer();
-    
+
     this.expansionModifier = new ExpansionModifier(this.graphData, this.initialCollapseDepth);
 
     this.Draw();
@@ -122,17 +122,17 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
       dagre.layout(graph);
       this.edges = graph.edges()
         .map(e => {
-          const x = graph.edge(e) as unknown as {source: Link, points: Array<{ x: number; y: number }>};        
+          const x = graph.edge(e) as unknown as {source: Link, points: Array<{ x: number; y: number }>};
 
           const startNode = graph.node(e.v);
           const endNode = graph.node(e.w);
 
-          const edge: IExtendedEdge = { 
-            start: startNode, 
-            end: endNode, 
+          const edge: IExtendedEdge = {
+            start: startNode,
+            end: endNode,
             startCenter: {x: startNode.x + (startNode.width / 2), y: startNode.y + (startNode.height / 2)},
             endCenter: {x: endNode.x + (endNode.width / 2), y: endNode.y + (endNode.height / 2)},
-            link: x.source, 
+            link: x.source,
             points: x.points };
 
           return edge;
@@ -142,20 +142,20 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
       this.nodes = graph.nodes().map(n => graph.node(n) as dagre.Node<IExtendedNode>);
     }
     if (this.mainLayer) {
-      
+
       this.Draw();
       this.mainLayer.parentViewport.render();
     }
   }
- 
+
   Draw() {
 
     if (this.mainLayer) {
-      this.mainLayer.scene.clear();      
+      this.mainLayer.scene.clear();
       const context = this.mainLayer.scene.context;
       this.edges.forEach(e => this.drawEdge(e, context));
       this.nodes.forEach(n => this.drawNode(n, context));
-            
+
     }
   }
 
@@ -187,7 +187,7 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private drawNode(n: dagre.Node<IExtendedNode>, ctx: CanvasRenderingContext2D) {
-    
+
     if (this.nodePreDraw.observers.length > 0) {
       const p: INodeCustomPreDraw = {extNode: n, ctx: ctx, skipDefaultDraw: true};
       this.nodePreDraw.emit(p);
@@ -203,14 +203,14 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
     ctx.shadowBlur = 4;
 
     ctx.fillStyle = n.source.backColor ? n.source.backColor : '#dddddd';
-    CanvasHelper.roundRect(ctx, n.x, n.y, n.width, n.height, 5);    
-    ctx.fill();    
-    ctx.strokeStyle = 'black';    
+    CanvasHelper.roundRect(ctx, n.x, n.y, n.width, n.height, 5);
+    ctx.fill();
+    ctx.strokeStyle = 'black';
     ctx.stroke();
     if (n.source.internalDisplayState === 'collapsed') {
       this.drawExpandIndicator(n, ctx);
-    } 
-    
+    }
+
     if (n.source.displayText) {
       ctx.fillStyle = n.source.textColor ? n.source.textColor : 'black';
       ctx.fillText(n.source.displayText, n.x + (n.width / 2), n.y + 27);
@@ -240,7 +240,7 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
         // do nothing
       } else {
         this.lastMousedNode = matching;
-        this.nodeMouseOver.emit(matching);        
+        this.nodeMouseOver.emit(matching);
         this.overlayLayer?.scene.clear();
         this.overlayLayer?.parentViewport.render();
       }
@@ -253,23 +253,23 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
 
           const helper = new HelperLine(link.start, link.end, undefined);
           //ctx.fillStyle = link.link.color  ? link.link.color : 'black';
-          
+
           ctx.textAlign = "center";
           ctx.font = "14px system-ui";
 
           const textSize =  ctx.measureText(link.link.displayText);
           const x = textSize.actualBoundingBoxLeft + event.mouseToCanvas.canvasXY.x;
           const y = event.mouseToCanvas.canvasXY.y - textSize.actualBoundingBoxAscent;
-          
+
           ctx.fillStyle = link.link.bgColor || '#dddddd';
           CanvasHelper.roundRect(ctx, event.mouseToCanvas.canvasXY.x - 4, event.mouseToCanvas.canvasXY.y - 15, textSize.width + 8, 20, 3);
           ctx.fill();
 
           ctx.fillStyle = link.link.textColor || 'black';
           ctx.textBaseline = 'hanging';
-          ctx.textAlign = 'left';         
+          ctx.textAlign = 'left';
           ctx.fillText(link.link.displayText,  event.mouseToCanvas.canvasXY.x, event.mouseToCanvas.canvasXY.y - 15);
-          
+
         }
         this.overlayLayer.parentViewport.render();
       }
@@ -280,7 +280,6 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
 
     if (event.layer.id !== this.mainLayer?.id) { return; }
 
-    console.log('MouseDoubleClick');
     const matching = this.findMatchingNode(event);
     this.lastMousedNode = matching;
 
@@ -295,27 +294,26 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  
+
   MouseClick(event: ILayerAndMouseInfo): void {
 
     if (event.layer.id !== this.mainLayer?.id) { return; }
 
-    console.log('MouseClick');
     if (event.mouseToCanvas?.mouseEvent.shiftKey) {
       this.MouseDoubleClick(event);
     } else {
       const matching = this.findMatchingNode(event);
       this.lastMousedNode = matching;
-  
+
       if (this.lastMousedNode) {
         this.nodeClick.emit(matching);
-      }  
+      }
     }
   }
-  
+
   private findClosestLink(event: ILayerAndMouseInfo): IExtendedEdge | undefined {
 
-    
+
     const lines =  this.edges.map(edge => new HelperLine(edge.startCenter, edge.endCenter, edge));
 
     const lineMatch = CanvasHelper.LineHit(lines, event.mouseToCanvas.canvasXY, 20);
@@ -331,7 +329,7 @@ export class NgxCanvasGraphComponent implements OnInit, OnChanges, OnDestroy {
   private findMatchingNode(event: ILayerAndMouseInfo): Node | undefined {
 
     if (event.mouseToCanvas) {
-      
+
       const canvasXY = event.mouseToCanvas.canvasXY;
 
       const matching = this.nodes.find(n =>

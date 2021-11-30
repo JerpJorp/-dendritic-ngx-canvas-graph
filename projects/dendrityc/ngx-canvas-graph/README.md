@@ -172,7 +172,7 @@ Run `ng build ngx-canvas-graph` to build the project. The build artifacts will b
 ## Publishing
 
 After building your library with `ng build ngx-canvas-graph`, go to the dist folder `cd dist/ngx-canvas-graph` and run `npm publish`.
-
+e.log
 ## Running unit tests
 
 Run `ng test ngx-canvas-graph` to execute the unit tests via [Karma](https://karma-runner.github.io).
